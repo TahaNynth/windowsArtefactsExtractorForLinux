@@ -1,0 +1,4 @@
+PyQt5>=5.15
+pyewf>=20190405
+pytsk3>=20160220
+python-dateutil>=2.8
