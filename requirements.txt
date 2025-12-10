@@ -1,4 +1,4 @@
 PyQt5>=5.15
-pyewf>=20190405
-pytsk3>=20160220
+libewf-python>=2024.05.06
+pytsk3>=2024.0
 python-dateutil>=2.8
