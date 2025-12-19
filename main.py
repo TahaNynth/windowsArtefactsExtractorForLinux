@@ -99,6 +99,37 @@ class MainWindow(QtWidgets.QWidget):
         self.expected_count = 0  # user-provided
         self.recent_intervals = deque(maxlen=64)  # for moving average
 
+    def toggle_dark_mode(self):
+        self.dark_mode = not self.dark_mode
+
+        if self.dark_mode:
+            # --- DARK MODE ---
+            self.setStyleSheet("""
+            QWidget { background-color: #121212; color: #e0e0e0; font-family: Inter, Arial, sans-serif; font-size: 13px; }
+            QGroupBox { font-weight: 600; border: 1px solid #444; border-radius: 6px; margin-top: 10px; }
+            QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 4px; }
+            QPushButton { padding: 6px 12px; background-color:#1f1f1f; border:1px solid #444; color:#e0e0e0; border-radius:4px; }
+            QPushButton:hover { background-color:#333; }
+            QLineEdit { background:#1c1c1c; color:#eee; border:1px solid #444; }
+            QTextEdit { background:#0f0f0f; color:#e6e6e6; font-family: monospace; }
+            QProgressBar { border:1px solid #444; text-align:center; background:#1f1f1f; color:white; }
+            QProgressBar::chunk { background-color:#3a8dff; }
+            """)
+
+            self.btn_dark_mode.setText("Light Mode")
+
+        else:
+            # --- LIGHT MODE (DEFAULT) ---
+            self.setStyleSheet("""
+            QWidget { font-family: Inter, Arial, sans-serif; font-size: 13px; }
+            QGroupBox { font-weight: 600; border: 1px solid #ddd; border-radius: 6px; margin-top: 10px; }
+            QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 4px; }
+            QPushButton { padding: 6px 12px; }
+            QTextEdit { background: #0f0f0f; color: #e6e6e6; font-family: monospace; }
+            """)
+
+            self.btn_dark_mode.setText("Dark Mode")
+
     # ---------------- UI parts ----------------
     def _build_header(self):
         w = QtWidgets.QWidget()
@@ -110,6 +141,13 @@ class MainWindow(QtWidgets.QWidget):
         left.addWidget(title)
         left.addWidget(subtitle)
         h.addLayout(left)
+        h.addStretch()
+
+        self.dark_mode = False
+        self.btn_dark_mode = QtWidgets.QPushButton("Dark Mode")
+        self.btn_dark_mode.setFixedWidth(100)
+        self.btn_dark_mode.clicked.connect(self.toggle_dark_mode)
+        h.addWidget(self.btn_dark_mode)
 
         # right side: simple status badge
         self.status_badge = QtWidgets.QLabel("Idle")
